@@ -1,4 +1,6 @@
 
+const consola = require('consola')
+
 // Google Tag Manager Class to be injected
 class GTM {
   constructor(ctx, options) {
@@ -14,6 +16,7 @@ class GTM {
     })
 
     if (this.options.pageTracking && (!this.options.respectDoNotTrack || !this.hasDNT())) {
+      consola.info('GTMp: this.initPageTracking()')
       this.initPageTracking()
     }
   }
@@ -44,6 +47,12 @@ class GTM {
   }
 
   hasDNT() {
+    consola.info('GTMp: window.doNotTrack', window.doNotTrack)
+    consola.info('GTMp: navigator.doNotTrack', navigator.doNotTrack)
+    consola.info('GTMp: navigator.doNotTrack', navigator.doNotTrack)
+    consola.info('GTMp: navigator.msDoNotTrack', navigator.msDoNotTrack)
+    consola.info('GTMp: window.external.msTrackingProtectionEnabled', window.external.msTrackingProtectionEnabled)
+    consola.info('GTMp: window.external.msTrackingProtectionEnabled()', window.external.msTrackingProtectionEnabled())
     return window.doNotTrack === '1' ||
       navigator.doNotTrack === 'yes' ||
       navigator.doNotTrack === '1' ||
