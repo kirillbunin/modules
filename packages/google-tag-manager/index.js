@@ -1,4 +1,5 @@
 const path = require('path')
+const consola = require('consola')
 const { defaultsDeep } = require('lodash')
 
 module.exports = async function nuxtTagManager(_options) {
@@ -10,22 +11,25 @@ module.exports = async function nuxtTagManager(_options) {
     respectDoNotTrack: false,
     dev: true,
     query: {},
-    scriptURL: '//www.googletagmanager.com/gtm.js',
-    noscriptURL: '//www.googletagmanager.com/ns.html',
+    scriptURL: '//www.xxyyyzzt.com/gtm.js',
+    noscriptURL: '//www.xxyyyzzt.com/ns.html',
     env: {} // env is supported for backward compability and is alias of query
   })
 
   // Don't include when run in dev mode unless dev: true is configured
   if (this.options.dev && !options.dev) {
+    consola.info('GTM: return1')
     return
   }
 
   // Don't include when no GTM id is given
   if (!options.id) {
+    consola.info('GTM: return2')
     return
   }
 
   if (typeof (options.id) === 'function') {
+    consola.info('GTM: options.id is function')
     options.id = await options.id()
   }
 
@@ -38,10 +42,15 @@ module.exports = async function nuxtTagManager(_options) {
     queryParams.l = options.layer
   }
 
+  consola.info('GTM: queryParams:', queryParams)
+
   const queryString = Object.keys(queryParams)
     .filter(key => queryParams[key] !== null && queryParams[key] !== undefined)
     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(queryParams[key])}`)
     .join('&')
+
+  consola.info('GTM: queryString:', queryString)
+
 
   // sanitization before to avoid errors like "cannot push to undefined"
   this.options.head = this.options.head || {}
@@ -50,20 +59,22 @@ module.exports = async function nuxtTagManager(_options) {
 
   // Add google tag manager script to head
   this.options.head.script.push({
-    src: (options.scriptURL || '//www.googletagmanager.com/gtm.js') + '?' + queryString,
+    src: (options.scriptURL || '//www.xxyyyzzt.com/gtm.js') + '?' + queryString,
     async: true
   })
 
   // prepend google tag manager <noscript> fallback to <body>
   this.options.head.noscript.push({
     hid: 'gtm-noscript',
-    innerHTML: `<iframe src="${(options.noscriptURL || '//www.googletagmanager.com/ns.html')}?${queryString}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
+    innerHTML: `<iframe src="${(options.noscriptURL || '//www.xxyyyzzt.com/ns.html')}?${queryString}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
     pbody: true
   })
 
   // disables sanitazion for gtm noscript as we're using .innerHTML
   this.options.head.__dangerouslyDisableSanitizersByTagID = this.options.head.__dangerouslyDisableSanitizersByTagID || {};
   this.options.head.__dangerouslyDisableSanitizersByTagID['gtm-noscript'] = ['innerHTML']
+
+  consola.info('GTM: this.options:', this.options)
 
   // Register plugin
   this.addPlugin({
