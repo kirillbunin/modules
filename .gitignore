@@ -1,6 +1,0 @@
-node_modules
-*.iml
-.idea
-*.log*
-packages/*/package-lock.json
-packages/*/yarn.lock
