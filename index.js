@@ -11,8 +11,8 @@ module.exports = async function nuxtTagManager(_options) {
     respectDoNotTrack: false,
     dev: true,
     query: {},
-    scriptURL: '//www.xxyyyzzt.com/gtm.js',
-    noscriptURL: '//www.xxyyyzzt.com/ns.html',
+    scriptURL: '//www.googletagmanager.com/gtm.js',
+    noscriptURL: '//www.googletagmanager.com/ns.html',
     env: {} // env is supported for backward compability and is alias of query
   })
 
@@ -59,14 +59,14 @@ module.exports = async function nuxtTagManager(_options) {
 
   // Add google tag manager script to head
   this.options.head.script.push({
-    src: (options.scriptURL || '//www.xxyyyzzt.com/gtm.js') + '?' + queryString,
+    src: (options.scriptURL || '//www.googletagmanager.com/gtm.js') + '?' + queryString,
     async: true
   })
 
   // prepend google tag manager <noscript> fallback to <body>
   this.options.head.noscript.push({
     hid: 'gtm-noscript',
-    innerHTML: `<iframe src="${(options.noscriptURL || '//www.xxyyyzzt.com/ns.html')}?${queryString}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
+    innerHTML: `<iframe src="${(options.noscriptURL || '//www.googletagmanager.com/ns.html')}?${queryString}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
     pbody: true
   })
 
